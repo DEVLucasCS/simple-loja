@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": 0,
+      "name": "1 camisetas com frases ironicas de paciencia sempre assim",
+      "images": [
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg",
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg"
+      ],
+      "price": 19.99,
+      "description": "Descrição do Produto 1"
+    },
+    {
+      "id": 1,
+      "name": "2 camisetas com frases ironicas de paciencia sempre assim",
+      "images": [
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg",
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg"
+      ],
+      "price": 29.99,
+      "description": "Descrição do Produto 2"
+    },
+    {
+      "id": 2,
+      "name": "3 camisetas com frases ironicas de paciencia sempre assim",
+      "images": [
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg",
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg"
+      ],
+      "price": 39.99,
+      "description": "Descrição do Produto 3"
+    },
+    {
+      "id": 3,
+      "name": "4 camisetas com frases ironicas de paciencia sempre assim",
+      "images": [
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg",
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg"
+      ],
+      "price": 49.99,
+      "description": "Descrição do Produto 4"
+    },
+    {
+      "id": 4,
+      "name": "5 camisetas com frases ironicas de paciencia sempre assim",
+      "images": [
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg",
+        "https://images.tcdn.com.br/img/img_prod/737444/camiseta_the_vinho_triplica_la_capacite_di_parlare_other_languages_942910587_1_5b4a7f14d2bf930e0d04963df525c876.jpg"
+      ],
+      "price": 59.99,
+      "description": "Descrição do Produto 5"
+    }
+  ]
+}
