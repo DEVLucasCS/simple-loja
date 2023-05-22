@@ -25,6 +25,8 @@ import { ShoppingCart, X } from "@phosphor-icons/react";
 export default function CartSidebar() {
   const [product, setProducts] = useState<IProduct[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [totalQuantityProductsCart, setTotalQuantityProductsCart] =
+    useState<number>(0);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -34,6 +36,20 @@ export default function CartSidebar() {
       state.isOpenCartSidebar
   );
   const { isOpenCartSidebar } = CartSidebarStore;
+
+  const selectorStoreProductsCart = useSelector(
+    (state: IselectorStoreProductsCart) => state.productsCart.products
+  );
+
+  const formattedTotalQuantityProductsCart = (() => {
+    const totalQuantityString = totalQuantityProductsCart.toString();
+
+    if (totalQuantityString.length > 2) {
+      return totalQuantityString.substring(0, 2) + "..";
+    } else {
+      return totalQuantityString;
+    }
+  })();
 
   const handleClickCloseCartSidebar = () => {
     dispatch(CloseCartSidebar());
@@ -57,21 +73,29 @@ export default function CartSidebar() {
     loadProducts();
   }, []);
 
-  const selectorStoreProductsCart = useSelector(
-    (state: IselectorStoreProductsCart) => state.productsCart.products
-  );
-
-  useEffect(() => {
-    const sumTotalPrice = selectorStoreProductsCart.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
-      0
-    );
-    setTotalPrice(sumTotalPrice);
-  }, [selectorStoreProductsCart]);
-
   useEffect(() => {
     if (selectorStoreProductsCart.length == 0) {
       dispatch(CloseCartSidebar());
+    }
+  }, [selectorStoreProductsCart]);
+
+  useEffect(() => {
+    if (selectorStoreProductsCart) {
+      const sumTotalPrice = selectorStoreProductsCart.reduce(
+        (accumulator, item) => accumulator + item.product.price * item.quantity,
+        0
+      );
+      setTotalPrice(sumTotalPrice);
+    }
+  }, [selectorStoreProductsCart]);
+
+  useEffect(() => {
+    if (selectorStoreProductsCart) {
+      const totalQuantityProductsCart = selectorStoreProductsCart.reduce(
+        (accumulator, item) => accumulator + item.quantity,
+        0
+      );
+      setTotalQuantityProductsCart(totalQuantityProductsCart);
     }
   }, [selectorStoreProductsCart]);
 
@@ -85,7 +109,9 @@ export default function CartSidebar() {
       <Styles.CartSidebar className={isOpenCartSidebar ? "sidebar--open" : ""}>
         <Styles.TitleSidebar>
           <span>
-            <ShoppingCart size={32} /> CARRINHO
+            <span>{formattedTotalQuantityProductsCart}</span>
+            <ShoppingCart size={32} />
+            CARRINHO
           </span>
           <span className="close" title="FECHAR">
             <X onClick={handleClickCloseCartSidebar} size={32} />

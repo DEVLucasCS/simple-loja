@@ -28,10 +28,32 @@ import { ShoppingCart } from "@phosphor-icons/react";
 
 export default function Home() {
   const [product, setProducts] = useState<IProduct[]>([]);
-
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [totalQuantityProductsCart, setTotalQuantityProductsCart] =
+    useState<number>(0);
 
   const dispatch = useDispatch();
+
+  const settingsSlider = {
+    Infinity: false,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    speed: 1000,
+  };
+
+  const selectorStoreProductsCart = useSelector(
+    (state: IselectorStoreProductsCart) => state.productsCart.products
+  );
+
+  const formattedTotalQuantityProductsCart = (() => {
+    const totalQuantityString = totalQuantityProductsCart.toString();
+
+    if (totalQuantityString.length > 2) {
+      return totalQuantityString.substring(0, 2) + "..";
+    } else {
+      return totalQuantityString;
+    }
+  })();
 
   const handleOpenCartSidebar = () => {
     if (selectorStoreProductsCart.length == 0) {
@@ -39,13 +61,6 @@ export default function Home() {
     } else {
       dispatch(OpenCartSidebar());
     }
-  };
-
-  const settingsSlider = {
-    Infinity: false,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    speed: 1000,
   };
 
   useEffect(() => {
@@ -60,17 +75,24 @@ export default function Home() {
 
     loadProducts();
   }, []);
-
-  const selectorStoreProductsCart = useSelector(
-    (state: IselectorStoreProductsCart) => state.productsCart.products
-  );
+  0;
 
   useEffect(() => {
     const sumTotalPrice = selectorStoreProductsCart.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
+      (accumulator, item) => accumulator + item.product.price * item.quantity,
       0
     );
     setTotalPrice(sumTotalPrice);
+  }, [selectorStoreProductsCart]);
+
+  useEffect(() => {
+    if (selectorStoreProductsCart) {
+      const totalQuantityProductsCart = selectorStoreProductsCart.reduce(
+        (accumulator, item) => accumulator + item.quantity,
+        0
+      );
+      setTotalQuantityProductsCart(totalQuantityProductsCart);
+    }
   }, [selectorStoreProductsCart]);
 
   return (
@@ -92,9 +114,11 @@ export default function Home() {
                 <Styles.InfoCartPriceTotal>
                   TOTAL: <Currency value={totalPrice} />
                 </Styles.InfoCartPriceTotal>
+
                 <Styles.InfoCartButtonCartFinish
                   onClick={handleOpenCartSidebar}
                 >
+                  <span>{formattedTotalQuantityProductsCart}</span>
                   <ShoppingCart size={32} />
                   FINALIZAR COMPRA
                 </Styles.InfoCartButtonCartFinish>

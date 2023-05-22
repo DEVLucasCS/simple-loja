@@ -1,8 +1,16 @@
+//imports
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
+import Slider from "react-slick";
+import Zoom from "react-medium-image-zoom";
 
+//interfaces
+import { IProduct } from "./interfaces";
+import { IselectorStoreProductsCart } from "@/store/productsCart/interfaces";
 import { IProductsCart } from "@/store/productsCart/interfaces";
 
-import { useDispatch, useSelector } from "react-redux";
+//store
 import {
   incrementQuantityProduct,
   decrementQuantityProduct,
@@ -10,23 +18,17 @@ import {
   removeProduct,
 } from "@/store/productsCart/Slice";
 
+//components
+import Currency from "@/components/Currency";
+
+//styles
 import * as Styles from "./styles";
-
-import Image from "next/image";
-
-import { IProduct } from "./interfaces";
-
-import { IselectorStoreProductsCart } from "@/store/productsCart/interfaces";
-
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 export default function Product({ product }: { product: IProduct }) {
-  const [productQuantity, setProductQuantity] = useState<number>(0);
+  const [productQuantity, setProductQuantity] = useState<number | null>(0);
 
   const dispatch = useDispatch();
 
@@ -41,7 +43,11 @@ export default function Product({ product }: { product: IProduct }) {
   };
 
   const handleClickIncrementQuantity = () => {
-    if (productQuantity >= 0 && product.id !== undefined) {
+    if (
+      productQuantity !== null &&
+      productQuantity >= 0 &&
+      productQuantity < 50
+    ) {
       setProductQuantity(productQuantity + 1);
       dispatch(
         incrementQuantityProduct({ id: product.id, price: product.price })
@@ -50,7 +56,7 @@ export default function Product({ product }: { product: IProduct }) {
   };
 
   const handleClickDecrementQuantity = () => {
-    if (productQuantity > 0) {
+    if (productQuantity !== null && productQuantity > 0) {
       setProductQuantity(productQuantity - 1);
       dispatch(decrementQuantityProduct(product.id));
     }
@@ -64,19 +70,40 @@ export default function Product({ product }: { product: IProduct }) {
     setProductQuantity(quantityInputValue);
   };
 
-  const handleChangeBlurInputQuantity = () => {
-    if (productQuantity > 0) {
-      setProductQuantity(productQuantity);
-      dispatch(
-        changeProductValue({
-          id: product.id,
-          price: product.price,
-          quantity: productQuantity,
-        })
-      );
-    } else {
-      setProductQuantity(0);
-      dispatch(removeProduct(product.id));
+  const handleBlurInputQuantity = () => {
+    if (productQuantity !== null) {
+      if (productQuantity > 0) {
+        setProductQuantity(productQuantity);
+        dispatch(
+          changeProductValue({
+            id: product.id,
+            price: product.price,
+            quantity: productQuantity,
+          })
+        );
+      } else {
+        setProductQuantity(0);
+        dispatch(removeProduct(product.id));
+      }
+
+      if (productQuantity > 50) {
+        setProductQuantity(50);
+        dispatch(
+          changeProductValue({
+            id: product.id,
+            price: product.price,
+            quantity: 50,
+          })
+        );
+      }
+    }
+  };
+
+  const handleKeyPressInputQuantity = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      handleBlurInputQuantity();
     }
   };
 
@@ -118,7 +145,7 @@ export default function Product({ product }: { product: IProduct }) {
       <Styles.CardTitle>{product.name}</Styles.CardTitle>
 
       <Styles.CardPrice>
-        R$ {product.price} - {productQuantity}
+        <Currency value={product.price} />
       </Styles.CardPrice>
 
       <Styles.CardQuantity>
@@ -127,9 +154,10 @@ export default function Product({ product }: { product: IProduct }) {
         </Styles.ButtonQuantity>
         <Styles.InputQuantity
           type="number"
-          value={productQuantity}
+          value={productQuantity !== null ? productQuantity.toString() : ""}
           onChange={handleChangeInputQuantity}
-          onBlur={handleChangeBlurInputQuantity}
+          onBlur={handleBlurInputQuantity}
+          onKeyPress={handleKeyPressInputQuantity}
         />
         <Styles.ButtonQuantity onClick={handleClickIncrementQuantity}>
           +

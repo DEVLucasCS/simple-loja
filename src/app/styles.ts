@@ -12,13 +12,14 @@ export const Container = styled.div`
   width: 100%;
   max-width: 1170px;
   display: flex;
+  align-items: center;
 `;
 
 export const InfoSection = styled.section`
   width: 350px;
+  height: 470px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: end;
 `;
 
 export const InfoContainer = styled.div`
@@ -76,9 +77,7 @@ export const InfoStrong = styled.strong`
 `;
 
 export const InfoCart = styled.section`
-  margin-bottom: -130px;
   margin-top: 90px;
-  width: 200px;
   height: 100px;
 `;
 
@@ -97,11 +96,12 @@ export const InfoCartButtonCartFinish = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   //style
-  background-color: var(--color-tertiary--strong);
+  background-color: var(--color-tertiary--dark);
   font-size: 14px;
   text-transform: uppercase;
-  color: var(--color-secondary--darki);
+  color: var(--color-secondary--dark);
   font-weight: 700;
   text-align: center;
   cursor: pointer;
@@ -115,6 +115,25 @@ export const InfoCartButtonCartFinish = styled.button`
     position: relative;
     top: -2px;
   }
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0.75rem;
+    height: 0.75rem;
+    position: absolute;
+    top: 0.25rem;
+    left: 2.25rem;
+    padding: 0.25rem;
+    z-index: 1;
+    border-radius: 50%;
+    //style
+    font-size: 0.5rem;
+    background-color: var(--color-primary--light);
+    color: var(--color-secondary--dark);
+    font-weight: 700;
+  }
 `;
 
 export const CardsSection = styled.section`
@@ -122,8 +141,6 @@ export const CardsSection = styled.section`
 `;
 
 export const CardsContainer = styled.div`
-  margin-top: calc(50vh - 225px);
-
   .slick-prev:before,
   .slick-next:before {
     font-size: 40px;

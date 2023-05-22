@@ -1,19 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { IisOpenCartSidebarState } from "./interfaces";
+import { initialState } from "./State";
+import { OpenCartSidebarReducer, CloseCartSidebarReducer } from "./Reducers";
 
 export const slice = createSlice({
   name: "isOpenCartSidebar",
-  initialState: {
-    isOpenCartSidebar: false,
-  },
+  initialState,
   reducers: {
-    OpenCartSidebar(state: IisOpenCartSidebarState) {
-      return { ...state, isOpenCartSidebar: true };
-    },
-    CloseCartSidebar(state: IisOpenCartSidebarState) {
-      return { ...state, isOpenCartSidebar: false };
-    },
+    OpenCartSidebar: OpenCartSidebarReducer,
+    CloseCartSidebar: CloseCartSidebarReducer,
   },
 });
 

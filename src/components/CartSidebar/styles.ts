@@ -64,6 +64,25 @@ export const TitleSidebar = styled.div`
       top: -2px;
       color: var(--color-secondary--strong);
     }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.75rem;
+      height: 0.75rem;
+      position: absolute;
+      top: 0.75rem;
+      left: 2rem;
+      padding: 0.25rem;
+      z-index: 1;
+      border-radius: 50%;
+      //style
+      font-size: 0.5rem;
+      background-color: var(--color-tertiary--strong);
+      color: var(--color-primary--light);
+      font-weight: 700;
+    }
   }
 `;
 

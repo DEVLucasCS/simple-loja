@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { IProductsCartState } from "./interfaces";
-
+import { initialState } from "./State";
 import {
   addProductReducer,
   removeProductReducer,
@@ -9,12 +8,6 @@ import {
   decrementQuantityProductReducer,
   changeProductValueReducer,
 } from "./Reducers";
-
-const storedProductsCart = localStorage.getItem("productsCart");
-
-const initialState: IProductsCartState = {
-  products: storedProductsCart ? JSON.parse(storedProductsCart) : [],
-};
 
 const productsCartSlice = createSlice({
   name: "productsCart",

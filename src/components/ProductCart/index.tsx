@@ -1,6 +1,17 @@
+//imports
 import React, { useState, useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
+
+//interfaces
+import { IProduct } from "./interfaces";
+import {
+  IProductsCart,
+  IselectorStoreProductsCart,
+} from "@/store/productsCart/interfaces";
+
+//store
 import {
   incrementQuantityProduct,
   decrementQuantityProduct,
@@ -8,23 +19,18 @@ import {
   removeProduct,
 } from "@/store/productsCart/Slice";
 
+//components
+import Currency from "@/components/Currency";
+
+//styles
 import * as Styles from "./styles";
-
-import Image from "next/image";
-
-import { Trash } from "@phosphor-icons/react";
-
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 
-import { IProduct } from "./interfaces";
-import {
-  IProductsCart,
-  IselectorStoreProductsCart,
-} from "@/store/productsCart/interfaces";
+//icons
+import { Trash } from "@phosphor-icons/react";
 
 export default function ProductCart({ product }: { product: IProduct }) {
-  const [productQuantity, setProductQuantity] = useState<number>(0);
+  const [productQuantity, setProductQuantity] = useState<number | null>(0);
 
   const [existingProductStored, setExistingProductStored] =
     useState<boolean>(false);
@@ -32,7 +38,11 @@ export default function ProductCart({ product }: { product: IProduct }) {
   const dispatch = useDispatch();
 
   const handleClickIncrementQuantity = () => {
-    if (productQuantity >= 0) {
+    if (
+      productQuantity !== null &&
+      productQuantity >= 0 &&
+      productQuantity < 50
+    ) {
       setProductQuantity(productQuantity + 1);
       dispatch(
         incrementQuantityProduct({ id: product.id, price: product.price })
@@ -41,7 +51,7 @@ export default function ProductCart({ product }: { product: IProduct }) {
   };
 
   const handleClickDecrementQuantity = () => {
-    if (productQuantity > 1) {
+    if (productQuantity !== null && productQuantity > 1) {
       setProductQuantity(productQuantity - 1);
       dispatch(decrementQuantityProduct(product.id));
     }
@@ -56,15 +66,38 @@ export default function ProductCart({ product }: { product: IProduct }) {
   };
 
   const handleBlurInputQuantity = () => {
-    const newQuantity = productQuantity > 0 ? productQuantity : 1;
-    setProductQuantity(newQuantity);
-    dispatch(
-      changeProductValue({
-        id: product.id,
-        price: product.price,
-        quantity: newQuantity,
-      })
-    );
+    const newQuantity =
+      productQuantity !== null && productQuantity > 0 ? productQuantity : 1;
+
+    if (newQuantity > 0) {
+      setProductQuantity(newQuantity);
+      dispatch(
+        changeProductValue({
+          id: product.id,
+          price: product.price,
+          quantity: newQuantity,
+        })
+      );
+    }
+
+    if (newQuantity > 50) {
+      setProductQuantity(50);
+      dispatch(
+        changeProductValue({
+          id: product.id,
+          price: product.price,
+          quantity: 50,
+        })
+      );
+    }
+  };
+
+  const handleKeyPressInputQuantity = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      handleBlurInputQuantity();
+    }
   };
 
   const handleClickRemoveProduct = () => {
@@ -110,7 +143,9 @@ export default function ProductCart({ product }: { product: IProduct }) {
           <div>
             <Styles.NameProduct>{product.name}</Styles.NameProduct>
 
-            <Styles.PriceProduct>R$ {product.price}</Styles.PriceProduct>
+            <Styles.PriceProduct>
+              <Currency value={product.price} />
+            </Styles.PriceProduct>
 
             <Styles.QuantityProduct>
               <Styles.ButtonQuantity onClick={handleClickDecrementQuantity}>
@@ -119,9 +154,12 @@ export default function ProductCart({ product }: { product: IProduct }) {
 
               <Styles.InputQuantity
                 type="number"
-                value={productQuantity}
+                value={
+                  productQuantity !== null ? productQuantity.toString() : ""
+                }
                 onChange={handleChangeInputQuantity}
                 onBlur={handleBlurInputQuantity}
+                onKeyPress={handleKeyPressInputQuantity}
               />
 
               <Styles.ButtonQuantity onClick={handleClickIncrementQuantity}>
